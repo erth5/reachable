@@ -1,6 +1,6 @@
     <div class="cell">
-        <input wire:change="store" wire:model="address" type="text" id="new"
-            placeholder="url / id"
+        <input wire:change="store" wire:model="newName" type="text" id="new"
+            placeholder="url / id" autofocus
             style="background-color:
         @if (isset($status)) @switch($status)
         @case (0) green @break

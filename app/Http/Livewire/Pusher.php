@@ -7,20 +7,31 @@ use Livewire\Component;
 
 class Pusher extends Component
 {
-    public $status;
-    public $address = null;
+    public $newName;
 
     public function render()
     {
         return view('livewire.pusher');
     }
 
-    public function check()
+    public function setStatus($address)
     {
         // wire:keydown="check"
-        info('checking address');
-        // $status = 2;
-        // ...
+        exec("ping -n 1 " . $this->newName, $output, $result);
+        // dd($output);
+        switch ($result) {
+            case 0:
+                $address->state = 0;
+                break;
+            case 1:
+                $address->state = 1;
+                break;
+            case 2:
+                info('Syntax Fault: ' . $output, $result);
+                $address->state = 3;
+                break;
+        }
+        return $address;
     }
 
     /**
@@ -28,10 +39,18 @@ class Pusher extends Component
      */
     public function store()
     {
-        info('adding new address');
+        info('adding ' . $this->newName);
         $newAddress = new Address();
-        $newAddress->address = $this->address;
+        $newAddress->name = $this->standardize($this->newName);
+        $newAddress = $this->setStatus($newAddress);
         $newAddress->saveOrFail();
+
         return redirect()->route('main');
+    }
+
+    private function standardize($name)
+    {
+        $name = str_replace(array('https//:', 'http//:'), '', $name);
+        return $name;
     }
 }

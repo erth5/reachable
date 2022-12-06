@@ -10,12 +10,13 @@ return new class extends Migration
      * 0 - ok, reachable
      * 1 - unreachable
      * 2 - wait,not analysed
+     * 3 - syntax fault
      */
     public function up()
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->string('address');
+            $table->string('name');
             $table->integer('state')->default(2);
             $table->timestamps();
         });

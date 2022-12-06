@@ -5,3 +5,8 @@ body{
 label{
     color: white;
 }
+p{
+    color: aqua;
+}
+/* li:nth-child(odd) {
+} */
