@@ -27,7 +27,7 @@ class Pusher extends Component
                 $address->state = 1;
                 break;
             case 2:
-                info('Syntax Fault: ' . $output, $result);
+                logger('Syntax Fault: ' . $output . $result);
                 $address->state = 3;
                 break;
         }
@@ -39,18 +39,29 @@ class Pusher extends Component
      */
     public function store()
     {
-        info('adding ' . $this->newName);
+        logger('adding ' . $this->newName);
         $newAddress = new Address();
-        $newAddress->name = $this->standardize($this->newName);
+
+        $name = $this->newName;
+        if (parse_url($name, PHP_URL_HOST) == null) {
+            if (parse_url($name, PHP_URL_PATH) == null) {
+                return redirect()->route('main')->with('error', $name . ' invalid url');
+            } else {
+                if (substr_count($name, ".") > 1) {
+                    /* schneidet den ersten Pfad Teil weg */
+                    $newAddress->name = (ltrim(strstr($name, '.'), "."));
+                } else {
+                    $newAddress->name = $this->standardize($name);
+                }
+            }
+        } else {
+            $newAddress->name = $this->standardize($name);
+        }
+
         $newAddress = $this->setStatus($newAddress);
         $newAddress->saveOrFail();
 
         return redirect()->route('main');
     }
 
-    private function standardize($name)
-    {
-        $name = str_replace(array('https//:', 'http//:'), '', $name);
-        return $name;
-    }
 }

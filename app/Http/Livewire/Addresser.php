@@ -31,7 +31,7 @@ class Addresser extends Component
 
     public function mount()
     {
-        // info('mount method call');
+        // logger('mount method call');
         $this->newName = $this->address->name;
     }
 
@@ -47,11 +47,26 @@ class Addresser extends Component
     public function update()
     {
         $dbAddress = Address::find($this->address->id); // notwendig?
-        info($dbAddress->name . ' change in ' . $this->newName);
-        $dbAddress->name = $this->standardize($this->newName);
+        logger($dbAddress->name . ' change in ' . $this->newName);
+
+        $name = $this->newName;
+        if (parse_url($name, PHP_URL_HOST) == null) {
+            if (parse_url($name, PHP_URL_PATH) == null) {
+                return redirect()->route('main')->with('error', $name . ' invalid url');
+            } else {
+                if (substr_count($name, ".") > 1) {
+                    /* schneidet den ersten Pfad Teil weg */
+                    $dbAddress->name = (ltrim(strstr($name, '.'), "."));
+                } else {
+                    $dbAddress->name = $this->standardize($name);
+                }
+            }
+        } else {
+            $dbAddress->name = $this->standardize($name);
+        }
 
         /** Status einsehen */
-        exec("ping -n 1 " . $this->newName, $output, $result);
+        exec("ping -n 1 " . $dbAddress->name, $output, $result);
         switch ($result) {
             case 0:
                 // dd($output);
@@ -61,7 +76,7 @@ class Addresser extends Component
                 $dbAddress->state = 1;
                 break;
             case 2:
-                info('Syntax Fault: ' . $output, $result);
+                logger('Syntax Fault: ' . $output .  $result);
                 $dbAddress->state = 3;
                 break;
         }
@@ -80,5 +95,13 @@ class Addresser extends Component
     {
         $name = str_replace(array('https', 'http', '://', 'www.', '\/'), '', $name);
         return $name;
+    }
+    private function validateUrl($url)
+    {
+        if (!filter_var($url, FILTER_VALIDATE_URL) === false) {
+            echo "$url is a valid URL";
+        } else {
+            echo "$url is not a valid URL";
+        }
     }
 }
