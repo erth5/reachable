@@ -19,7 +19,6 @@
 </head>
 
 <body class="antialiased">
-    <x-sessionStatus />
     @yield('c')
 
     <script src="js/vendor/jquery.js"></script>
@@ -28,6 +27,7 @@
     <script>
         $(document).foundation();
     </script>
+    <x-sessionStatus />
     @livewireScripts
 </body>
 
