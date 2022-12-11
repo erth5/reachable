@@ -1,8 +1,10 @@
-<div class="container mt-5 bottom">
-    <div class="row">
+<form>
+    <div class="container mt-5 bottom">
+        <div class="row">
+            <button formmethod="get" formaction="{{ route('kernel') }}">            </button>
 
-        {{-- <div class="col-sm-12">
-            <div class="alert fade alert-simple alert-info alert-dismissible text-left font__family-montserrat font__size-16 font__weight-light brk-library-rendered rendered show"
+                {{-- <div class="col-sm-12">
+                <div class="alert fade alert-simple alert-info alert-dismissible text-left font__family-montserrat font__size-16 font__weight-light brk-library-rendered rendered show"
                 role="alert" data-brk-library="component__alert">
                 <button type="button" class="close font__size-18" data-dismiss="alert">
                     <span aria-hidden="true">
@@ -16,56 +18,57 @@
             </div>
         </div> --}}
 
-        <div class="col-sm-12">
-            <div class="alert
+                <div class="col-sm-12">
+                    <div class="alert
             fade
             alert-simple
             alert-primary
             alert-dismissible
             rendered show"
-                role="alert">
-                {{-- <button type="button" class="close font__size-18" data-dismiss="alert">
+                        role="alert">
+                        {{-- <button type="button" class="close font__size-18" data-dismiss="alert">
                     <span aria-hidden="true"><i class="fa fa-times alertprimary"></i></span>
                 </button> --}}
-                {{-- <i class="start-icon fa fa-thumbs-up faa-bounce animated"></i> --}}
-                <strong class="font__weight-semibold">info</strong>
+                        {{-- <i class="start-icon fa fa-thumbs-up faa-bounce animated"></i> --}}
+                        <strong class="font__weight-semibold">info</strong>
 
-                @if (session('status'))
-                    {{ session('status') }}
-                @endif
-                @if (session('success'))
-                    {{ session('success') }}
-                @endif
-                @if (session('error'))
-                    {{ session('error') }}
-                @endif
+                        @if (session('status'))
+                            {{ session('status') }}
+                        @endif
+                        @if (session('success'))
+                            {{ session('success') }}
+                        @endif
 
-                @if (session('statusInfo'))
-                    {{ session('statusInfo') }}
-                @endif
-                @if (session('statusSuccess'))
-                    {{ session('statusSuccess') }}
-                @endif
-                @if (session('statusError'))
-                    {{ session('statusError') }}
-                @endif
+                        @if (session('error'))
+                            {{ session('error') }}
+                        @endif
+                        @if (session('statusInfo'))
+                            {{ session('statusInfo') }}
+                        @endif
+                        @if (session('statusSuccess'))
+                            {{ session('statusSuccess') }}
+                        @endif
+                        @if (session('statusError'))
+                            {{ session('statusError') }}
+                        @endif
 
-                {{-- use with "withErrors", used lang->validation messages --}}
-                @if ($errors->any())
-                    {{ $errors->first() }}
-                @endif
+                        {{-- use with "withErrors", used lang->validation messages --}}
+                        @if ($errors->any())
+                            {{ $errors->first() }}
+                        @endif
 
-                @if ($errors->any() > 0)
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li> {{ $error }} </li>
-                        @endforeach
-                    </ul>
-                @endif
+                        @if ($errors->any() > 0)
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li> {{ $error }} </li>
+                                @endforeach
+                            </ul>
+                        @endif
+                        , click to re connect all
+                    </div>
+                </div>
 
 
-            </div>
         </div>
-
     </div>
-</div>
+</form>

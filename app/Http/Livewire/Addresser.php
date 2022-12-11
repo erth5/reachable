@@ -54,11 +54,16 @@ class Addresser extends Component
             if (parse_url($name, PHP_URL_PATH) == null) {
                 return redirect()->route('main')->with('error', $name . ' invalid url');
             } else {
-                if (substr_count($name, ".") > 1) {
-                    /* schneidet den ersten Pfad Teil weg */
-                    $dbAddress->name = (ltrim(strstr($name, '.'), "."));
-                } else {
+                exec("ping -n 1 " . $dbAddress->name, $output, $result);
+                if ($result != 0) {
                     $dbAddress->name = $this->standardize($name);
+                } else {
+                    if (substr_count($name, ".") > 1) {
+                        /* schneidet den ersten Pfad Teil weg */
+                        $dbAddress->name = (ltrim(strstr($name, '.'), "."));
+                    } else {
+                        $dbAddress->name = $this->standardize($name);
+                    }
                 }
             }
         } else {
