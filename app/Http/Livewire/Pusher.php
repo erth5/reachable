@@ -64,4 +64,10 @@ class Pusher extends Component
         return redirect()->route('main');
     }
 
+    private function standardize($name)
+    {
+        $name = str_replace(array('https', 'http', '://', 'www.', '\/'), '', $name);
+        return $name;
+    }
+
 }
